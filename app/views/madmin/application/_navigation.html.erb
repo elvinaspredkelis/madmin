@@ -1,6 +1,13 @@
-<div class="text-sm">
+<div class="text-sm font-semibold px-2 space-y">
   <%= link_to "← Back to App", main_app.root_url, class: "block p-1", data: { turbo: false } if main_app.respond_to?(:root_url) %>
+  
+  <hr class="my-6">
+  
+  <h3 class="text-xl text-black mb-4">Resources</h3>
+  
   <% Madmin.resources.each do |resource| %>
-    <%= link_to resource.friendly_name.pluralize, resource.index_path, class: "block p-1" %>
+    <div class="group">
+      <%= link_to resource.friendly_name.pluralize, resource.index_path, class: "inline-flex p-1 px-4 py-2.5 text-gray-700 hover:text-black hover:bg-gray-300 rounded" %>
+    </div>
   <% end %>
 </div>

@@ -1,47 +1,53 @@
-<div class="flex justify-between">
-  <h1><%= resource.friendly_name.pluralize %></h1>
-  <%= link_to "New #{resource.friendly_name}", resource.new_path %>
+<div class="w-full flex justify-between items-center">
+  <h1 class="text-3xl font-bold text-gray-800"><%= resource.friendly_name.pluralize %></h1>
+  <%= link_to "New #{resource.friendly_name}", resource.new_path, class:"border-2 border-black hover:bg-gray-100 text-sm font-semibold rounded px-4 py-2.5" %>
 </div>
 
-<div>
-  <% if resource.scopes.any? %>
-    <%= link_to "All", resource.index_path %>
-  <% end %>
+<% if resource.scopes.any? %>
+  <div class="mt-8">
+    <%= link_to "All", resource.index_path, class: "px-4 py-2 border rounded hover:bg-gray-100" %>
 
-  <% resource.scopes.each do |scope| %>
-    <%= link_to scope.to_s.humanize, resource.index_path(scope: scope) %>
-  <% end %>
-</div>
-
-<table class="table-auto">
-  <thead>
-    <tr>
-      <% resource.attributes.each do |attribute| %>
-        <% next if attribute[:field].nil? %>
-        <% next unless attribute[:field].visible?(action_name) %>
-
-        <th><%= attribute[:name].to_s.titleize %></th>
-      <% end %>
-      <th>Actions</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @records.each do |record| %>
-      <tr>
-        <% resource.attributes.each do |attribute| %>
-          <% next if attribute[:field].nil? %>
-          <% next unless attribute[:field].visible?(action_name) %>
-
-          <% field = attribute[:field] %>
-
-          <td><%= render partial: field.to_partial_path("index"), locals: { field: field, record: record } %></td>
-        <% end %>
-
-        <td><%= link_to "View", resource.show_path(record) %></td>
-      </tr>
+    <% resource.scopes.each do |scope| %>
+      <%= link_to scope.to_s.humanize, resource.index_path(scope: scope), class:"px-4 py-2 border rounded hover:bg-gray-100" %>
     <% end %>
-  </tbody>
-</table>
+  </div>
+<% end %>
+
+<hr class="my-10">
+
+<div class="flex overflow-scroll">
+  <div class="rounded border">
+    <table class="table-auto px-2">
+      <thead class="uppercase border-b bg-gray-50">
+        <tr>
+          <% resource.attributes.each do |attribute| %>
+            <% next if attribute[:field].nil? %>
+            <% next unless attribute[:field].visible?(action_name) %>
+
+            <th class="pl-2 pr-6 py-3 text-left text-xs font-light text-gray-600 uppercase"><%= attribute[:name].to_s.titleize %></th>
+          <% end %>
+          <th class="pl-2 pr-6 py-3 text-left text-xs font-light text-gray-600 uppercase">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y py-2">
+        <% @records.each do |record| %>
+          <tr>
+            <% resource.attributes.each do |attribute| %>
+              <% next if attribute[:field].nil? %>
+              <% next unless attribute[:field].visible?(action_name) %>
+
+              <% field = attribute[:field] %>
+
+              <td class="prose py-3 pl-2 pr-6"><%= render partial: field.to_partial_path("index"), locals: { field: field, record: record } %></td>
+            <% end %>
+
+            <td><%= link_to "View", resource.show_path(record), class:"px-4 py-2 border-2 rounded hover:bg-gray-200" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <%== pagy_nav(@pagy) if @pagy.pages > 1 %>

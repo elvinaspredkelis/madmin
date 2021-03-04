@@ -14,13 +14,12 @@
 
     <%= render "javascript" %>
   </head>
-  <body class="prose" style="max-width:none">
-    <div class="flex w-full p-4">
-      <div id="sidebar" class="w-64 flex-shrink-0">
+  <body>
+    <div class="grid grid-cols-3 md:grid-cols-10 gap-8">
+      <aside id="sidebar" class="flex flex-shrink-0 md:inline-grid col-span-1 md:col-span-2 h-screen min-h-full bg-gray-100 p-6 border-r overflow-scroll">
         <%= render "navigation" -%>
-      </div>
-      <main class="w-full" role="main">
-        <%#= render "flashes" -%>
+      </aside>
+      <main class="col-span-2 md:col-span-8 pl-2 pr-8 py-10" role="main">
         <%= yield %>
       </main>
     </div>
